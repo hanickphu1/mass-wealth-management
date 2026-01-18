@@ -1,0 +1,2094 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Khách hàng cá nhân | Mass Affluent</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,500;1,400&family=Quicksand:wght@400;500;600;700&display=swap&subset=vietnamese"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --teal: #2a9d8f;
+        --teal-light: #40b3a5;
+        --teal-dark: #1f7a6f;
+        --navy: #264653;
+        --navy-dark: #1a323d;
+        --cream: #f8f6f2;
+        --cream-dark: #ebe7df;
+        --text-primary: #2c3e50;
+        --text-secondary: #5d6d7e;
+        --text-light: #95a5a6;
+        --white: #ffffff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Quicksand, sans-serif;
+        background: #0f1a2e;
+        color: var(--text-primary);
+        line-height: 1.8;
+        overflow-x: hidden;
+        font-size: 15px;
+      }
+
+      .page {
+        min-height: 100vh;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+      .page.active {
+        opacity: 1;
+      }
+      .page.hidden {
+        display: none;
+      }
+
+      /* ==================== TAGLINE PAGE ==================== */
+      #tagline-page {
+        background: linear-gradient(
+          135deg,
+          #0f1a2e 0%,
+          #1a323d 50%,
+          #264653 100%
+        );
+        position: relative;
+        min-height: 100vh;
+      }
+
+      .hero-background {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse at 30% 20%,
+            rgba(42, 157, 143, 0.12) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            ellipse at 70% 80%,
+            rgba(233, 196, 106, 0.08) 0%,
+            transparent 50%
+          );
+        pointer-events: none;
+      }
+
+      .tagline-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 50px 40px;
+        position: relative;
+        z-index: 10;
+      }
+
+      .tagline-header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .brand-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 35px;
+      }
+
+      .brand-line {
+        width: 50px;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--teal),
+          transparent
+        );
+      }
+
+      .brand-text {
+        color: var(--teal);
+        font-size: 11px;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        font-weight: 600;
+      }
+
+      .tagline-title {
+        font-family: Merriweather, serif;
+        font-size: clamp(32px, 4.5vw, 52px);
+        font-weight: 400;
+        color: var(--white);
+        margin-bottom: 16px;
+        line-height: 1.25;
+      }
+
+      .tagline-title span {
+        color: var(--teal-light);
+        display: block;
+        font-style: italic;
+      }
+
+      .tagline-subtitle {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 15px;
+        max-width: 550px;
+        margin: 0 auto;
+      }
+
+      .tagline-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        max-width: 1100px;
+        margin: 0 auto 50px;
+      }
+
+      @media (max-width: 900px) {
+        .tagline-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .tagline-card {
+        position: relative;
+        height: 300px;
+        cursor: pointer;
+        overflow: hidden;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition:
+          transform 0.3s ease,
+          border-color 0.3s ease;
+        background: linear-gradient(
+          135deg,
+          rgba(42, 157, 143, 0.1) 0%,
+          rgba(38, 70, 83, 0.3) 100%
+        );
+        will-change: transform;
+      }
+
+      .tagline-card:hover {
+        border-color: rgba(42, 157, 143, 0.5);
+        transform: translateY(-4px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      }
+
+      .tagline-card.selected {
+        border-color: var(--teal);
+        border-width: 2px;
+        background: linear-gradient(
+          135deg,
+          rgba(42, 157, 143, 0.2) 0%,
+          rgba(38, 70, 83, 0.4) 100%
+        );
+      }
+
+      .card-bg {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        transition: transform 0.5s ease;
+        opacity: 0.6;
+        will-change: transform;
+      }
+
+      .tagline-card:hover .card-bg {
+        transform: scale(1.05);
+      }
+
+      .tagline-card[data-tagline="1"] .card-bg {
+        background:
+          linear-gradient(
+            180deg,
+            rgba(15, 26, 46, 0.4) 0%,
+            rgba(15, 26, 46, 0.85) 100%
+          ),
+          url("https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&q=80")
+            center/cover;
+      }
+      .tagline-card[data-tagline="2"] .card-bg {
+        background:
+          linear-gradient(
+            180deg,
+            rgba(15, 26, 46, 0.4) 0%,
+            rgba(15, 26, 46, 0.85) 100%
+          ),
+          url("https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80")
+            center/cover;
+      }
+      .tagline-card[data-tagline="3"] .card-bg {
+        background:
+          linear-gradient(
+            180deg,
+            rgba(15, 26, 46, 0.4) 0%,
+            rgba(15, 26, 46, 0.85) 100%
+          ),
+          url("https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&q=80")
+            center/cover;
+      }
+      .tagline-card[data-tagline="4"] .card-bg {
+        background:
+          linear-gradient(
+            180deg,
+            rgba(15, 26, 46, 0.4) 0%,
+            rgba(15, 26, 46, 0.85) 100%
+          ),
+          url("https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80")
+            center/cover;
+      }
+
+      .card-content {
+        position: absolute;
+        inset: 0;
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        z-index: 2;
+      }
+
+      .card-number {
+        position: absolute;
+        top: 35px;
+        right: 28px;
+        font-family: Merriweather, serif;
+        font-size: 48px;
+        color: rgba(42, 157, 143, 0.3);
+      }
+
+      .card-icon {
+        width: 56px;
+        height: 56px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1.5px solid var(--teal);
+        border-radius: 14px;
+        transition: background 0.3s ease;
+        background: rgba(42, 157, 143, 0.1);
+        position: absolute;
+        top: 35px;
+        left: 35px;
+        margin-bottom: 0;
+      }
+
+      .tagline-card.selected .card-icon {
+        background: var(--teal);
+      }
+
+      .card-icon svg {
+        width: 22px;
+        height: 22px;
+        stroke: var(--teal-light);
+        stroke-width: 1.5;
+        fill: none;
+      }
+
+      .tagline-card.selected .card-icon svg {
+        stroke: var(--white);
+      }
+
+      .card-headline {
+        font-family: Merriweather, serif;
+        font-size: 26px;
+        font-weight: 500;
+        color: var(--white);
+        margin-bottom: 12px;
+      }
+
+      .card-subline {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 15px;
+        line-height: 1.7;
+      }
+
+      .card-check {
+        position: absolute;
+        top: 20px;
+        right: 28px;
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+        background: var(--teal);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transform: scale(0.5);
+        transition:
+          opacity 0.3s ease,
+          transform 0.3s ease;
+      }
+
+      .tagline-card.selected .card-check {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .card-check svg {
+        width: 16px;
+        height: 16px;
+        stroke: var(--white);
+        stroke-width: 3;
+      }
+
+      .continue-section {
+        text-align: center;
+        opacity: 0;
+        transform: translateY(15px);
+        transition:
+          opacity 0.3s ease,
+          transform 0.3s ease;
+        pointer-events: none;
+      }
+
+      .continue-section.visible {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: all;
+      }
+
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        padding: 18px 48px;
+        background: linear-gradient(
+          135deg,
+          var(--teal) 0%,
+          var(--teal-dark) 100%
+        );
+        border: none;
+        color: var(--white);
+        font-family: Quicksand, sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+        border-radius: 12px;
+      }
+
+      .btn-primary:hover {
+        box-shadow: 0 8px 30px rgba(42, 157, 143, 0.4);
+        transform: translateY(-2px);
+      }
+
+      .btn-primary svg {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+        stroke-width: 2;
+      }
+
+      .btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        padding: 18px 48px;
+        background: var(--navy);
+        border: 1px solid var(--teal);
+        color: var(--white);
+        font-family: Quicksand, sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition:
+          background 0.3s ease,
+          transform 0.3s ease;
+        border-radius: 12px;
+      }
+
+      .btn-secondary:hover {
+        background: var(--teal);
+        transform: translateY(-2px);
+      }
+
+      .btn-secondary svg {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+        stroke-width: 2;
+      }
+
+      /* ==================== JOURNEY PAGE ==================== */
+      #journey-page {
+        background: var(--cream);
+        min-height: 100vh;
+      }
+
+      .journey-header {
+        background: linear-gradient(
+          135deg,
+          var(--navy-dark) 0%,
+          var(--navy) 100%
+        );
+        padding: 20px 40px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .journey-header-inner {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .btn-back {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.6);
+        font-family: Quicksand, sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: color 0.3s ease;
+      }
+
+      .btn-back:hover {
+        color: var(--teal-light);
+      }
+
+      .btn-back svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+        stroke-width: 2;
+      }
+
+      .selected-tagline-display .tagline-text {
+        font-family: Merriweather, serif;
+        font-size: 18px;
+        color: var(--teal-light);
+        font-style: italic;
+      }
+
+      .step-indicator {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 12px;
+        letter-spacing: 1px;
+        font-weight: 500;
+      }
+
+      .progress-bar-container {
+        background: var(--cream-dark);
+        position: sticky;
+        top: 68px;
+        z-index: 99;
+      }
+
+      .progress-bar {
+        height: 4px;
+        background: linear-gradient(
+          90deg,
+          var(--teal) 0%,
+          var(--teal-light) 100%
+        );
+        transition: width 0.4s ease;
+      }
+
+      .journey-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 60px 40px 80px;
+      }
+
+      .step-section {
+        animation: fadeIn 0.4s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .step-intro {
+        text-align: center;
+        margin-bottom: 50px;
+      }
+
+      .step-timeline {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 30px;
+      }
+
+      .timeline-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .timeline-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--cream-dark);
+        transition: all 0.3s ease;
+      }
+
+      .timeline-step.active .timeline-dot {
+        width: 16px;
+        height: 16px;
+        background: linear-gradient(
+          135deg,
+          var(--teal) 0%,
+          var(--teal-dark) 100%
+        );
+        box-shadow: 0 4px 15px rgba(42, 157, 143, 0.4);
+      }
+
+      .timeline-step.completed .timeline-dot {
+        background: var(--teal-light);
+      }
+
+      .timeline-line {
+        width: 40px;
+        height: 2px;
+        background: var(--cream-dark);
+        transition: background 0.3s ease;
+      }
+
+      .timeline-line.completed {
+        background: var(--teal-light);
+      }
+
+      .timeline-label {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--text-light);
+        transition: color 0.3s ease;
+      }
+
+      .timeline-step.active .timeline-label {
+        color: var(--teal-dark);
+      }
+
+      .timeline-step.completed .timeline-label {
+        color: var(--teal);
+      }
+
+      .step-intro h2 {
+        font-family: Merriweather, serif;
+        font-size: 36px;
+        font-weight: 500;
+        color: var(--navy);
+        margin-bottom: 12px;
+      }
+
+      .step-intro p {
+        color: var(--text-secondary);
+        font-size: 15px;
+        font-style: italic;
+      }
+
+      .main-features-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        margin-bottom: 50px;
+      }
+
+      .main-features-grid.cols-2 {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      @media (max-width: 1000px) {
+        .main-features-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 700px) {
+        .main-features-grid,
+        .main-features-grid.cols-2 {
+          grid-template-columns: 1fr;
+          max-width: 500px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+      }
+
+      .main-feature-card {
+        background: var(--white);
+        border-radius: 16px;
+        padding: 36px 32px;
+        cursor: pointer;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease,
+          border-color 0.3s ease;
+        border: 1px solid var(--cream-dark);
+        position: relative;
+        overflow: hidden;
+        will-change: transform;
+      }
+
+      .main-feature-card::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(
+          180deg,
+          var(--teal) 0%,
+          var(--teal-dark) 100%
+        );
+        border-radius: 0 4px 4px 0;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .main-feature-card:hover {
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        transform: translateY(-4px);
+      }
+
+      .main-feature-card.selected {
+        border-color: var(--teal);
+        background: linear-gradient(
+          135deg,
+          rgba(42, 157, 143, 0.03) 0%,
+          var(--white) 100%
+        );
+      }
+
+      .main-feature-card.selected::before {
+        opacity: 1;
+      }
+
+      .feature-card-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+
+      .feature-name {
+        color: var(--teal-dark);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+      }
+
+      .feature-check {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: linear-gradient(
+          135deg,
+          var(--teal) 0%,
+          var(--teal-dark) 100%
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transform: scale(0.5);
+        transition:
+          opacity 0.3s ease,
+          transform 0.3s ease;
+      }
+
+      .main-feature-card.selected .feature-check {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .feature-check svg {
+        width: 14px;
+        height: 14px;
+        stroke: var(--white);
+        stroke-width: 3;
+      }
+
+      .feature-headline {
+        font-family: Merriweather, serif;
+        font-size: 26px;
+        font-weight: 500;
+        color: var(--navy);
+        margin-bottom: 20px;
+        line-height: 1.3;
+      }
+
+      .customer-statement {
+        position: relative;
+        padding-left: 18px;
+        border-left: 2px solid var(--teal-light);
+      }
+
+      .customer-statement p {
+        font-family: Merriweather, serif;
+        font-size: 17px;
+        font-style: italic;
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+
+      .detail-features-section {
+        margin-top: 50px;
+        padding-top: 50px;
+        border-top: 1px solid var(--cream-dark);
+        display: none;
+      }
+
+      .detail-features-section.visible {
+        display: block;
+        animation: fadeIn 0.4s ease;
+      }
+
+      .detail-section-header {
+        margin-bottom: 40px;
+      }
+
+      .detail-section-label {
+        color: var(--teal-dark);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+
+      .detail-section-title {
+        font-family: Merriweather, serif;
+        font-size: 36px;
+        font-weight: 500;
+        color: var(--navy);
+      }
+
+      .detail-features-grid {
+        display: grid;
+        gap: 28px;
+      }
+
+      .detail-features-grid.cols-3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .detail-features-grid.cols-2 {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      .detail-features-grid.cols-4 {
+        grid-template-columns: repeat(
+          2,
+          1fr
+        ); /* Chuyển thành 2 cột -> 4 item sẽ tự rớt xuống thành 2 hàng */
+        max-width: 950px; /* Giới hạn chiều rộng để không bị quá bè */
+        margin: 0 auto; /* Căn giữa */
+      }
+
+      @media (max-width: 900px) {
+        .detail-features-grid.cols-3,
+        .detail-features-grid.cols-4,
+        .detail-features-grid.cols-2 {
+          grid-template-columns: 1fr;
+          max-width: 500px;
+          margin: 0 auto;
+        }
+      }
+
+      .detail-feature-card {
+        background: linear-gradient(
+          135deg,
+          var(--navy) 0%,
+          var(--navy-dark) 100%
+        );
+        border-radius: 20px;
+        overflow: hidden;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+        will-change: transform;
+      }
+
+      .detail-feature-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+      }
+
+      .detail-feature-image {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+      }
+
+      .cols-2 .detail-feature-image,
+      .cols-4 .detail-feature-image {
+        height: 240px;
+      }
+
+      .detail-feature-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+        will-change: transform;
+      }
+
+      .detail-feature-card:hover .detail-feature-image img {
+        transform: scale(1.08);
+      }
+
+      .detail-feature-content {
+        padding: 28px;
+        background: linear-gradient(
+          135deg,
+          var(--navy) 0%,
+          var(--navy-dark) 100%
+        );
+      }
+
+      .cols-2 .detail-feature-content,
+      .cols-4 .detail-feature-content {
+        padding: 32px;
+      }
+
+      .detail-feature-icon {
+        width: 52px;
+        height: 52px;
+        background: linear-gradient(
+          135deg,
+          var(--teal) 0%,
+          var(--teal-dark) 100%
+        );
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 18px;
+        box-shadow: 0 8px 20px rgba(42, 157, 143, 0.3);
+      }
+
+      .detail-feature-icon svg {
+        width: 24px;
+        height: 24px;
+        stroke: var(--white);
+        stroke-width: 1.5;
+        fill: none;
+      }
+
+      .detail-feature-title {
+        font-family: Merriweather, serif;
+        font-size: 22px;
+        font-weight: 500;
+        color: var(--teal-light);
+        margin-bottom: 12px;
+        line-height: 1.3;
+      }
+
+      .detail-feature-desc {
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 14px;
+        line-height: 1.8;
+      }
+
+      .step-navigation {
+        text-align: center;
+        margin-top: 70px;
+        padding-top: 50px;
+        border-top: 1px solid var(--cream-dark);
+      }
+
+      .selection-summary {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 25px;
+        flex-wrap: wrap;
+      }
+
+      .summary-tag {
+        padding: 10px 20px;
+        background: var(--white);
+        border: 1px solid var(--teal-light);
+        border-radius: 25px;
+        font-size: 13px;
+        color: var(--teal-dark);
+        font-weight: 600;
+      }
+
+      .summary-empty {
+        color: var(--text-light);
+        font-size: 14px;
+        font-style: italic;
+      }
+
+      .nav-buttons {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+      }
+
+      .btn-outline {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 36px;
+        background: transparent;
+        border: 1px solid var(--cream-dark);
+        color: var(--text-secondary);
+        font-family: Quicksand, sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition:
+          border-color 0.3s ease,
+          color 0.3s ease;
+        border-radius: 12px;
+      }
+
+      .btn-outline:hover {
+        border-color: var(--teal);
+        color: var(--teal-dark);
+      }
+
+      .btn-outline svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+        stroke-width: 2;
+      }
+
+      .completion-section {
+        text-align: center;
+        padding: 80px 40px;
+      }
+
+      .completion-icon {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(
+          135deg,
+          var(--teal) 0%,
+          var(--teal-dark) 100%
+        );
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 40px;
+        box-shadow: 0 20px 50px rgba(42, 157, 143, 0.3);
+      }
+
+      .completion-icon svg {
+        width: 50px;
+        height: 50px;
+        stroke: var(--white);
+        stroke-width: 2;
+      }
+
+      .completion-title {
+        font-family: Merriweather, serif;
+        font-size: 42px;
+        font-weight: 500;
+        color: var(--navy);
+        margin-bottom: 20px;
+      }
+
+      .completion-desc {
+        color: var(--text-secondary);
+        font-size: 16px;
+        max-width: 600px;
+        margin: 0 auto 40px;
+      }
+
+      .all-selections {
+        max-width: 800px;
+        margin: 0 auto 50px;
+        text-align: left;
+        background: var(--white);
+        border-radius: 20px;
+        padding: 40px;
+        border: 1px solid var(--cream-dark);
+      }
+
+      .selection-group {
+        margin-bottom: 30px;
+      }
+      .selection-group:last-child {
+        margin-bottom: 0;
+      }
+
+      .selection-group-title {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--teal-dark);
+        margin-bottom: 12px;
+      }
+
+      .selection-group-items {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      @media (max-width: 768px) {
+        .tagline-container,
+        .journey-content {
+          padding: 30px 20px;
+        }
+        .tagline-card {
+          height: 260px;
+        }
+        .journey-header {
+          padding: 15px 20px;
+        }
+        .journey-header-inner {
+          flex-wrap: wrap;
+          gap: 10px;
+          justify-content: center;
+        }
+        .selected-tagline-display {
+          order: -1;
+          width: 100%;
+          text-align: center;
+        }
+        .main-feature-card {
+          padding: 28px 24px;
+        }
+        .nav-buttons {
+          flex-direction: column;
+        }
+        .step-timeline {
+          gap: 4px;
+          padding: 0 10px;
+        }
+        .timeline-line {
+          width: 20px;
+        }
+        .timeline-label {
+          font-size: 8px;
+          letter-spacing: 1px;
+        }
+        .timeline-dot {
+          width: 10px;
+          height: 10px;
+        }
+        .timeline-step.active .timeline-dot {
+          width: 14px;
+          height: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- PAGE 1: TAGLINE SELECTION -->
+    <div id="tagline-page" class="page active">
+      <div class="hero-background"></div>
+      <div class="tagline-container">
+        <header class="tagline-header">
+          <div class="brand-badge">
+            <div class="brand-line"></div>
+            <span class="brand-text">Khách hàng cá nhân | Mass Affluent</span>
+            <div class="brand-line"></div>
+          </div>
+          <h1 class="tagline-title">
+            Chọn triết lý tài chính
+            <span>phù hợp với bạn</span>
+          </h1>
+          <p class="tagline-subtitle">
+            Mỗi lựa chọn phản ánh một cách tiếp cận khác nhau trong hành trình
+            quản lý tài sản
+          </p>
+        </header>
+
+        <div class="tagline-grid">
+          <div class="tagline-card" data-tagline="1">
+            <div class="card-bg"></div>
+            <div class="card-content">
+              <span class="card-number">01</span>
+              <div class="card-check">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M5 13l4 4L19 7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <div class="card-icon">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+              </div>
+              <h3 class="card-headline">
+                "An tâm đầu tư, vững bước tương lai"
+              </h3>
+              <p class="card-subline">
+                Bảo vệ tài sản an toàn, minh bạch rõ ràng trong từng quyết định
+              </p>
+            </div>
+          </div>
+          <div class="tagline-card" data-tagline="2">
+            <div class="card-bg"></div>
+            <div class="card-content">
+              <span class="card-number">02</span>
+              <div class="card-check">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M5 13l4 4L19 7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <div class="card-icon">
+                <svg viewBox="0 0 24 24">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+              </div>
+              <h3 class="card-headline">
+                "Đồng hành cùng cộng đồng thành công"
+              </h3>
+              <p class="card-subline">
+                Yên tâm hơn khi biết những người như bạn cũng đang sử dụng dịch
+                vụ này
+              </p>
+            </div>
+          </div>
+          <div class="tagline-card" data-tagline="3">
+            <div class="card-bg"></div>
+            <div class="card-content">
+              <span class="card-number">03</span>
+              <div class="card-check">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M5 13l4 4L19 7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <div class="card-icon">
+                <svg viewBox="0 0 24 24">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                </svg>
+              </div>
+              <h3 class="card-headline">
+                "Đơn giản để bắt đầu, dễ dàng để tiếp tục"
+              </h3>
+              <p class="card-subline">
+                Trải nghiệm sản phẩm với mức đầu tư thấp, quy trình gọn nhẹ
+                không rào cản
+              </p>
+            </div>
+          </div>
+          <div class="tagline-card" data-tagline="4">
+            <div class="card-bg"></div>
+            <div class="card-content">
+              <span class="card-number">04</span>
+              <div class="card-check">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M5 13l4 4L19 7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <div class="card-icon">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" />
+                  <circle cx="12" cy="12" r="6" />
+                  <circle cx="12" cy="12" r="2" />
+                </svg>
+              </div>
+              <h3 class="card-headline">
+                "Tự tin hơn mỗi ngày với hỗ trợ đúng lúc"
+              </h3>
+              <p class="card-subline">
+                Luôn có người đồng hành khi bạn cần, kiến thức vững vàng không
+                quá tải
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="continue-section" id="continue-section">
+          <button class="btn-primary" id="btn-continue">
+            <span>Tiếp tục</span>
+            <svg viewBox="0 0 24 24" fill="none">
+              <path
+                d="M5 12h14M12 5l7 7-7 7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 2: JOURNEY -->
+    <div id="journey-page" class="page hidden">
+      <header class="journey-header">
+        <div class="journey-header-inner">
+          <button class="btn-back" id="btn-back">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path
+                d="M19 12H5M12 19l-7-7 7-7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <span>Quay lại</span>
+          </button>
+          <div class="selected-tagline-display">
+            <span class="tagline-text" id="selected-tagline-text"></span>
+          </div>
+          <span class="step-indicator" id="step-indicator">Bước 1 / 5</span>
+        </div>
+      </header>
+
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progress-bar" style="width: 20%"></div>
+      </div>
+
+      <main class="journey-content" id="journey-content"></main>
+    </div>
+
+    <script>
+      // Cache DOM elements
+      const els = {
+        taglinePage: document.getElementById("tagline-page"),
+        journeyPage: document.getElementById("journey-page"),
+        taglineCards: document.querySelectorAll(".tagline-card"),
+        continueSection: document.getElementById("continue-section"),
+        btnContinue: document.getElementById("btn-continue"),
+        btnBack: document.getElementById("btn-back"),
+        journeyContent: document.getElementById("journey-content"),
+        stepIndicator: document.getElementById("step-indicator"),
+        progressBar: document.getElementById("progress-bar"),
+        selectedTaglineText: document.getElementById("selected-tagline-text"),
+      };
+
+      // Constants
+      const TAGLINE_TEXTS = {
+        1: '"An tâm đầu tư, vững bước tương lai"',
+        2: '"Đồng hành cùng cộng đồng thành công"',
+        3: '"Đơn giản để bắt đầu, dễ dàng để tiếp tục"',
+        4: '"Tự tin hơn mỗi ngày với hỗ trợ đúng lúc"',
+      };
+
+      const ICONS = {
+        shield:
+          '<svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+        users:
+          '<svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+        lightbulb:
+          '<svg viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.9V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.1A7 7 0 0 0 12 2z"/></svg>',
+        award:
+          '<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>',
+        star: '<svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+        briefcase:
+          '<svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>',
+        trendingUp:
+          '<svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',
+        zap: '<svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+        edit: '<svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>',
+        message:
+          '<svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+        target:
+          '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+        pieChart:
+          '<svg viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>',
+        monitor:
+          '<svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>',
+        bell: '<svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>',
+        fileText:
+          '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',
+        phone:
+          '<svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
+        book: '<svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+        check:
+          '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>',
+        search:
+          '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>',
+        clock:
+          '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+        cpu: '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>',
+        eye: '<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+        alertTriangle:
+          '<svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+        dollarSign:
+          '<svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
+        map: '<svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>',
+        barChart:
+          '<svg viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>',
+        checkSquare:
+          '<svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>',
+        user: '<svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+        helpCircle:
+          '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+        columns:
+          '<svg viewBox="0 0 24 24"><path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7m0-18H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7m0-18v18"/></svg>',
+        filter:
+          '<svg viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>',
+        checkCircle:
+          '<svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+      };
+
+      const STEPS_DATA = [
+        {
+          id: 1,
+          title: "Nhận biết & Cân nhắc",
+          description:
+            "Chọn những yếu tố quan trọng nhất với bạn khi lựa chọn dịch vụ đầu tư",
+          features: [
+            {
+              id: 1,
+              name: "Rõ ràng ngay từ đầu",
+              headline: "An toàn và minh bạch từ bước đầu tiên",
+              statement:
+                "Tôi muốn biết dịch vụ này an toàn và không khiến tôi mất tiền một cách không cần thiết",
+              details: [
+                {
+                  title: "Thông tin pháp lý rõ ràng",
+                  desc: "Thông tin rõ ràng về pháp lý và cơ chế bảo vệ nhà đầu tư",
+                  image:
+                    "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80",
+                  icon: "shield",
+                },
+                {
+                  title: "Minh họa cách hoạt động",
+                  desc: "Minh hoạ đơn giản cách sản phẩm hoạt động để bạn hiểu rõ trước khi đầu tư",
+                  image:
+                    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
+                  icon: "lightbulb",
+                },
+                {
+                  title: "Biểu phí minh bạch",
+                  desc: "Biểu phí được minh bạch, trình bày rõ ràng, dễ hiểu - không phí ẩn",
+                  image:
+                    "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80",
+                  icon: "fileText",
+                },
+              ],
+            },
+            {
+              id: 2,
+              name: "Những người xung quanh tôi cũng sử dụng",
+              headline: "Yên tâm với sự đồng hành của cộng đồng",
+              statement:
+                "Tôi cảm thấy yên tâm hơn khi biết những người giống tôi cũng đang dùng dịch vụ này",
+              details: [
+                {
+                  title: "Nhiều người giống tôi đang sử dụng",
+                  desc: "Thông tin cho thấy nhiều người có hoàn cảnh tương tự đang sử dụng dịch vụ",
+                  image:
+                    "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
+                  icon: "users",
+                },
+                {
+                  title: "Ví dụ thực tế từ khách hàng",
+                  desc: "Ví dụ thực tế về khách hàng có cùng điều kiện tài chính đã sử dụng dịch vụ này trước đây",
+                  image:
+                    "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&q=80",
+                  icon: "star",
+                },
+              ],
+            },
+            {
+              id: 3,
+              name: "Có thể thử nghiệm sản phẩm trước",
+              headline: "Trải nghiệm trước, quyết định sau",
+              statement:
+                "Tôi muốn có thể trải nghiệm mà không cần bỏ ra quá nhiều ngay từ đầu",
+              details: [
+                {
+                  title: "Yêu cầu số tiền bắt đầu thấp",
+                  desc: "Bắt đầu với số vốn nhỏ để làm quen với sản phẩm trước khi đầu tư lớn hơn",
+                  image:
+                    "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&q=80",
+                  icon: "dollarSign",
+                },
+                {
+                  title: "Xem thử trải nghiệm trước",
+                  desc: "Xem thử trải nghiệm sản phẩm trước khi chính thức sử dụng",
+                  image:
+                    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+                  icon: "monitor",
+                },
+                {
+                  title: "Hướng dẫn liên hệ hỗ trợ",
+                  desc: "Hướng dẫn chi tiết cách liên hệ kênh hỗ trợ khi cần",
+                  image:
+                    "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
+                  icon: "phone",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: 2,
+          title: "Bắt đầu & Làm quen",
+          description:
+            "Quy trình đăng ký được thiết kế đơn giản, nhanh chóng và có hướng dẫn rõ ràng",
+          features: [
+            {
+              id: 4,
+              name: "Ít thao tác",
+              headline: "Hoàn tất nhanh chóng và gọn gàng",
+              statement:
+                "Tôi muốn hoàn tất các bước ban đầu một cách nhanh chóng và gọn gàng",
+              details: [
+                {
+                  title: "Tự động điền sẵn thông tin",
+                  desc: "Tự động điền sẵn thông tin đăng ký từ dữ liệu có sẵn",
+                  image:
+                    "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80",
+                  icon: "edit",
+                },
+                {
+                  title: "Lựa chọn mặc định sẵn",
+                  desc: "Lựa chọn mặc định được thiết lập sẵn để tiết kiệm thời gian",
+                  image:
+                    "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80",
+                  icon: "checkSquare",
+                },
+                {
+                  title: "Quy trình ngắn gọn",
+                  desc: "Quy trình bắt đầu ngắn gọn, tập trung vào những bước quan trọng nhất",
+                  image:
+                    "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=800&q=80",
+                  icon: "zap",
+                },
+              ],
+            },
+            {
+              id: 5,
+              name: "Được hướng dẫn từng bước",
+              headline: "Rõ ràng để tránh làm sai",
+              statement:
+                "Tôi muốn có hướng dẫn rõ ràng để tránh làm sai trong quá trình bắt đầu",
+              details: [
+                {
+                  title: "Lộ trình bắt đầu rõ ràng",
+                  desc: "Lộ trình bắt đầu rõ ràng với hướng dẫn cụ thể cho từng bước",
+                  image:
+                    "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=800&q=80",
+                  icon: "map",
+                },
+                {
+                  title: "Hiển thị tiến độ",
+                  desc: "Hiển thị tiến độ trong quá trình thực hiện để biết mình đang ở đâu",
+                  image:
+                    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
+                  icon: "barChart",
+                },
+                {
+                  title: "Hướng dẫn chi tiết",
+                  desc: "Hướng dẫn chi tiết theo từng bước với giải thích dễ hiểu",
+                  image:
+                    "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=800&q=80",
+                  icon: "fileText",
+                },
+              ],
+            },
+            {
+              id: 6,
+              name: "Có hỗ trợ khi cần",
+              headline: "Luôn có người hỗ trợ khi chưa chắc chắn",
+              statement:
+                "Tôi muốn biết rằng luôn có người hỗ trợ khi tôi cảm thấy chưa chắc chắn",
+              details: [
+                {
+                  title: "Hỗ trợ từ RM hoặc chi nhánh",
+                  desc: "Có thể yêu cầu hỗ trợ từ RM hoặc chi nhánh bất cứ lúc nào",
+                  image:
+                    "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80",
+                  icon: "user",
+                },
+                {
+                  title: "Nút trợ giúp rõ ràng",
+                  desc: "Nút trợ giúp hiển thị rõ ở mỗi bước để dễ dàng tìm kiếm hỗ trợ",
+                  image:
+                    "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
+                  icon: "helpCircle",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: 3,
+          title: "Tư vấn & Lựa chọn sản phẩm",
+          description:
+            "Tìm hiểu sản phẩm một cách đơn giản với gợi ý phù hợp cho bạn",
+          features: [
+            {
+              id: 7,
+              name: "Có người đi trước để tham khảo",
+              headline: "Học hỏi từ những người đi trước",
+              statement:
+                "Tôi cảm thấy yên tâm hơn khi biết nhiều người giống tôi thường bắt đầu theo cách này",
+              details: [
+                {
+                  title: "Nhận định từ chuyên gia",
+                  desc: "Nhận định từ chuyên gia theo sản phẩm, theo ngành hoặc theo chủ đề",
+                  image:
+                    "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&q=80",
+                  icon: "award",
+                },
+                {
+                  title: "Danh mục đầu tư mẫu",
+                  desc: "Danh mục đầu tư mẫu từ chuyên gia để tham khảo",
+                  image:
+                    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
+                  icon: "pieChart",
+                },
+                {
+                  title: "Đánh giá danh mục đầu tư",
+                  desc: "Công cụ đánh giá danh mục đầu tư hiện tại của bạn",
+                  image:
+                    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+                  icon: "search",
+                },
+                {
+                  title: "Danh mục khởi đầu sẵn",
+                  desc: "Danh mục khởi đầu được thiết kế sẵn cho người mới bắt đầu",
+                  image:
+                    "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
+                  icon: "briefcase",
+                },
+              ],
+            },
+            {
+              id: 8,
+              name: "Dễ hiểu, không phức tạp",
+              headline: "Đơn giản, không thuật ngữ khó hiểu",
+              statement:
+                "Tôi muốn hiểu sản phẩm một cách đơn giản, không dùng quá nhiều thuật ngữ khó hiểu",
+              details: [
+                {
+                  title: "Danh mục mẫu trực quan",
+                  desc: "Xem danh mục mẫu theo cách trực quan, dễ hình dung",
+                  image:
+                    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
+                  icon: "eye",
+                },
+                {
+                  title: "So sánh trên một trang",
+                  desc: "So sánh sản phẩm trên một trang để dễ đối chiếu",
+                  image:
+                    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+                  icon: "columns",
+                },
+                {
+                  title: "Mô phỏng kết quả đầu tư",
+                  desc: "Mô phỏng kết quả đầu tư của sản phẩm/danh mục theo thời gian",
+                  image:
+                    "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
+                  icon: "trendingUp",
+                },
+              ],
+            },
+            {
+              id: 9,
+              name: "Phù hợp với tôi",
+              headline: "Sản phẩm phù hợp với hoàn cảnh của bạn",
+              statement:
+                "Tôi muốn biết rõ sản phẩm này phù hợp với ai và trong hoàn cảnh nào",
+              details: [
+                {
+                  title: "Gợi ý theo hồ sơ rủi ro",
+                  desc: "Gợi ý đầu tư phù hợp với hồ sơ rủi ro của tôi",
+                  image:
+                    "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80",
+                  icon: "target",
+                },
+                {
+                  title: "Công cụ lọc theo tiêu chí",
+                  desc: "Công cụ lọc cổ phiếu hoặc quỹ theo tiêu chí riêng",
+                  image:
+                    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+                  icon: "filter",
+                },
+                {
+                  title: "Giải thích rủi ro rõ ràng",
+                  desc: "Giải thích rõ về rủi ro và thời gian đầu tư phù hợp",
+                  image:
+                    "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80",
+                  icon: "alertTriangle",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: 4,
+          title: "Sử dụng sản phẩm",
+          description:
+            "Quản lý đầu tư một cách tự động với sự kiểm soát của bạn",
+          features: [
+            {
+              id: 10,
+              name: "Tự động",
+              headline: "Vận hành tự động, không cần can thiệp nhiều",
+              statement:
+                "Tôi muốn khoản đầu tư được vận hành tự động, không cần phải can thiệp thường xuyên",
+              details: [
+                {
+                  title: "Hệ thống tự động quản lý",
+                  desc: "Hệ thống tự động quản lý và điều chỉnh danh mục theo chiến lược đã chọn",
+                  image:
+                    "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&q=80",
+                  icon: "cpu",
+                },
+                {
+                  title: "Đầu tư định kỳ tự động",
+                  desc: "Kế hoạch đầu tư định kỳ, tự động theo thời gian đã thiết lập",
+                  image:
+                    "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80",
+                  icon: "clock",
+                },
+                {
+                  title: "Thông báo xác nhận ngắn gọn",
+                  desc: "Thông báo xác nhận ngắn gọn sau mỗi thay đổi để bạn nắm bắt tình hình",
+                  image:
+                    "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80",
+                  icon: "bell",
+                },
+              ],
+            },
+            {
+              id: 11,
+              name: "Xem và duyệt trước khi thực hiện",
+              headline: "Kiểm soát mọi quyết định trước khi thực hiện",
+              statement:
+                "Tôi muốn duyệt trước khi bất kỳ đề xuất tự động nào được thực hiện",
+              details: [
+                {
+                  title: "Gợi ý danh mục hiệu quả",
+                  desc: "Gợi ý danh mục với tỷ lệ phân bổ hiệu quả để bạn xem xét",
+                  image:
+                    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
+                  icon: "pieChart",
+                },
+                {
+                  title: "Gợi ý mua bán phù hợp",
+                  desc: "Gợi ý mua bán phù hợp với hồ sơ rủi ro của bạn",
+                  image:
+                    "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
+                  icon: "trendingUp",
+                },
+                {
+                  title: "Duyệt hoặc từ chối một chạm",
+                  desc: "Duyệt hoặc từ chối giao dịch chỉ với một thao tác đơn giản",
+                  image:
+                    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+                  icon: "checkCircle",
+                },
+              ],
+            },
+            {
+              id: 12,
+              name: "Giải thích rõ ràng",
+              headline: "Hiểu rõ lý do trước mọi thay đổi",
+              statement:
+                "Tôi muốn hiểu rõ lý do trước khi có bất kỳ thay đổi nào",
+              details: [
+                {
+                  title: "Phân tích từ chuyên gia",
+                  desc: "Phân tích về sản phẩm dựa trên góc nhìn chuyên gia",
+                  image:
+                    "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&q=80",
+                  icon: "award",
+                },
+                {
+                  title: "So sánh đa chiều",
+                  desc: "So sánh sản phẩm hoặc danh mục dựa trên nhiều chỉ số phân tích khác nhau",
+                  image:
+                    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
+                  icon: "barChart",
+                },
+                {
+                  title: "Hỗ trợ qua tin nhắn",
+                  desc: "Hỗ trợ bằng việc trao đổi qua tin nhắn khi cần giải đáp thắc mắc",
+                  image:
+                    "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
+                  icon: "message",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: 5,
+          title: "Gắn kết",
+          description:
+            "Tự tin hơn mỗi ngày với kiến thức vững vàng và hỗ trợ kịp thời",
+          features: [
+            {
+              id: 13,
+              name: "Tự tin đầu tư hơn theo thời gian",
+              headline: "Kiến thức vững vàng, không quá tải",
+              statement:
+                "Tôi muốn có kiến thức vững vàng hơn, mà không cảm thấy quá tải",
+              details: [
+                {
+                  title: "Tóm tắt hiệu quả đầu tư",
+                  desc: "Tóm tắt hiệu quả đầu tư đơn giản, dễ hiểu",
+                  image:
+                    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
+                  icon: "barChart",
+                },
+                {
+                  title: "Phân tích trấn an",
+                  desc: "Có phân tích, giải thích nguyên nhân nhằm trấn an khi thị trường hoặc danh mục biến động",
+                  image:
+                    "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
+                  icon: "shield",
+                },
+                {
+                  title: "Nội dung học tập ngắn gọn",
+                  desc: "Nội dung học tập ngắn gọn, dễ tiếp thu - không quá tải thông tin",
+                  image:
+                    "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&q=80",
+                  icon: "book",
+                },
+              ],
+            },
+            {
+              id: 14,
+              name: "An tâm vì luôn có hỗ trợ",
+              headline: "Luôn có người đồng hành khi cần",
+              statement:
+                "Tôi biết rằng khi cần, luôn có người để trao đổi và hỗ trợ",
+              details: [
+                {
+                  title: "Cộng đồng nhà đầu tư",
+                  desc: "Cộng đồng nhà đầu tư để trao đổi và học hỏi kinh nghiệm",
+                  image:
+                    "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80",
+                  icon: "users",
+                },
+                {
+                  title: "Hỗ trợ trực tiếp trong ứng dụng",
+                  desc: "Dễ dàng liên hệ hỗ trợ trực tiếp trong ứng dụng khi cần giúp đỡ",
+                  image:
+                    "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&q=80",
+                  icon: "message",
+                },
+              ],
+            },
+          ],
+        },
+      ];
+
+      // State
+      let state = {
+        selectedTagline: null,
+        currentStep: 1,
+        selections: { 1: [], 2: [], 3: [], 4: [], 5: [] },
+        currentDetailFeature: null,
+      };
+
+      // Event Handlers
+      els.taglineCards.forEach((card) => {
+        card.addEventListener("click", function () {
+          els.taglineCards.forEach((c) => c.classList.remove("selected"));
+          this.classList.add("selected");
+          state.selectedTagline = this.dataset.tagline;
+          els.continueSection.classList.add("visible");
+        });
+      });
+
+      els.btnContinue.addEventListener("click", () => {
+        if (state.selectedTagline) {
+          els.taglinePage.classList.remove("active");
+          els.taglinePage.classList.add("hidden");
+          els.journeyPage.classList.remove("hidden");
+          setTimeout(() => els.journeyPage.classList.add("active"), 50);
+          els.selectedTaglineText.textContent =
+            TAGLINE_TEXTS[state.selectedTagline];
+          renderStep(1);
+        }
+      });
+
+      els.btnBack.addEventListener("click", () => {
+        if (state.currentStep > 1) {
+          renderStep(state.currentStep - 1);
+        } else {
+          els.journeyPage.classList.remove("active");
+          setTimeout(() => {
+            els.journeyPage.classList.add("hidden");
+            els.taglinePage.classList.remove("hidden");
+            setTimeout(() => els.taglinePage.classList.add("active"), 50);
+          }, 300);
+        }
+      });
+
+      // Render Functions
+      function renderStep(stepNum) {
+        state.currentStep = stepNum;
+        els.stepIndicator.textContent = `Bước ${stepNum} / 5`;
+        els.progressBar.style.width = `${stepNum * 20}%`;
+
+        if (stepNum > 5) {
+          renderCompletion();
+          return;
+        }
+
+        const step = STEPS_DATA[stepNum - 1];
+        const gridClass =
+          step.features.length === 2
+            ? "main-features-grid cols-2"
+            : "main-features-grid";
+
+        els.journeyContent.innerHTML = `
+          <div class="step-section">
+            <div class="step-intro">
+              ${renderTimeline(stepNum)}
+              <h2>${step.title}</h2>
+              <p>${step.description}</p>
+            </div>
+            <div class="${gridClass}" id="features-grid">
+              ${step.features.map((f) => renderFeatureCard(f, stepNum)).join("")}
+            </div>
+            <div class="detail-features-section" id="detail-section">
+              <div class="detail-section-header">
+                <div class="detail-section-label">Tính năng chi tiết</div>
+                <h3 class="detail-section-title" id="detail-title"></h3>
+              </div>
+              <div class="detail-features-grid" id="detail-grid"></div>
+            </div>
+            <div class="step-navigation">
+              <div class="selection-summary" id="summary">${renderSummary(stepNum)}</div>
+              <div class="nav-buttons">
+                ${stepNum > 1 ? `<button class="btn-outline" onclick="renderStep(${stepNum - 1})"><svg viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Quay lại</span></button>` : ""}
+                <button class="btn-secondary" onclick="goToNextStep()">
+                  <span>${stepNum === 5 ? "Hoàn thành" : "Tiếp tục"}</span>
+                  <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        attachFeatureCardListeners(stepNum);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function attachFeatureCardListeners(stepNum) {
+        document
+          .querySelectorAll("#features-grid .main-feature-card")
+          .forEach((card) => {
+            card.addEventListener("click", function () {
+              const featureId = parseInt(this.dataset.featureId);
+              this.classList.toggle("selected");
+
+              if (this.classList.contains("selected")) {
+                if (!state.selections[stepNum].includes(featureId))
+                  state.selections[stepNum].push(featureId);
+                showDetailFeatures(stepNum, featureId);
+              } else {
+                state.selections[stepNum] = state.selections[stepNum].filter(
+                  (id) => id !== featureId,
+                );
+                if (state.currentDetailFeature === featureId) {
+                  if (state.selections[stepNum].length > 0) {
+                    showDetailFeatures(
+                      stepNum,
+                      state.selections[stepNum][
+                        state.selections[stepNum].length - 1
+                      ],
+                    );
+                  } else {
+                    document
+                      .getElementById("detail-section")
+                      .classList.remove("visible");
+                  }
+                }
+              }
+              document.getElementById("summary").innerHTML =
+                renderSummary(stepNum);
+            });
+          });
+      }
+
+      function renderFeatureCard(feature, stepNum) {
+        const isSelected = state.selections[stepNum].includes(feature.id);
+        return `
+          <div class="main-feature-card ${isSelected ? "selected" : ""}" data-feature-id="${feature.id}">
+            <div class="feature-card-header">
+              <span class="feature-name">${feature.name}</span>
+              <div class="feature-check"><svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </div>
+            <h3 class="feature-headline">${feature.headline}</h3>
+            <div class="customer-statement"><p>"${feature.statement}"</p></div>
+          </div>
+        `;
+      }
+
+      function showDetailFeatures(stepNum, featureId) {
+        const step = STEPS_DATA[stepNum - 1];
+        const feature = step.features.find((f) => f.id === featureId);
+        if (!feature) return;
+
+        state.currentDetailFeature = featureId;
+        const numItems = feature.details.length;
+        const colsClass =
+          numItems === 2 ? "cols-2" : numItems === 4 ? "cols-4" : "cols-3";
+
+        document.getElementById("detail-title").textContent = feature.name;
+        document.getElementById("detail-grid").className =
+          "detail-features-grid " + colsClass;
+        document.getElementById("detail-grid").innerHTML = feature.details
+          .map(
+            (d) => `
+            <div class="detail-feature-card">
+              <div class="detail-feature-image"><img src="${d.image}" alt="${d.title}" loading="lazy"></div>
+              <div class="detail-feature-content">
+                <div class="detail-feature-icon">${ICONS[d.icon]}</div>
+                <h4 class="detail-feature-title">${d.title}</h4>
+                <p class="detail-feature-desc">${d.desc}</p>
+              </div>
+            </div>
+          `,
+          )
+          .join("");
+
+        document.getElementById("detail-section").classList.add("visible");
+      }
+
+      function renderSummary(stepNum) {
+        if (state.selections[stepNum].length === 0)
+          return '<span class="summary-empty">Chọn ít nhất một tính năng để tiếp tục</span>';
+        const step = STEPS_DATA[stepNum - 1];
+        return state.selections[stepNum]
+          .map((id) => {
+            const feature = step.features.find((f) => f.id === id);
+            return `<span class="summary-tag">${feature.name}</span>`;
+          })
+          .join("");
+      }
+
+      function renderTimeline(currentStep) {
+        const steps = ["Nhận biết", "Bắt đầu", "Tư vấn", "Sử dụng", "Gắn kết"];
+        let html = '<div class="step-timeline">';
+
+        for (let i = 0; i < 5; i++) {
+          const stepClass =
+            i + 1 === currentStep
+              ? "active"
+              : i + 1 < currentStep
+                ? "completed"
+                : "";
+          const lineClass = i + 1 < currentStep ? "completed" : "";
+
+          html += `
+            <div class="timeline-step ${stepClass}">
+              <div class="timeline-dot"></div>
+              <span class="timeline-label">${steps[i]}</span>
+            </div>
+          `;
+
+          if (i < 4) {
+            html += `<div class="timeline-line ${lineClass}"></div>`;
+          }
+        }
+
+        html += "</div>";
+        return html;
+      }
+
+      function goToNextStep() {
+        renderStep(state.currentStep + 1);
+      }
+
+      function renderCompletion() {
+        els.stepIndicator.textContent = "Hoàn thành";
+        els.progressBar.style.width = "100%";
+
+        els.journeyContent.innerHTML = `
+          <div class="completion-section">
+            <div class="completion-icon">${ICONS.check}</div>
+            <h2 class="completion-title">Cảm ơn bạn đã hoàn thành!</h2>
+            <p class="completion-desc">Chúng tôi đã ghi nhận các lựa chọn của bạn. Đội ngũ tư vấn sẽ liên hệ với bạn trong thời gian sớm nhất.</p>
+            <div class="all-selections">
+              ${STEPS_DATA.map(
+                (step, i) => `
+                <div class="selection-group">
+                  <div class="selection-group-title">${step.title}</div>
+                  <div class="selection-group-items">
+                    ${
+                      state.selections[i + 1].length > 0
+                        ? state.selections[i + 1]
+                            .map((id) => {
+                              const feature = step.features.find(
+                                (f) => f.id === id,
+                              );
+                              return `<span class="summary-tag">${feature.name}</span>`;
+                            })
+                            .join("")
+                        : '<span class="summary-empty">Chưa chọn</span>'
+                    }
+                  </div>
+                </div>
+              `,
+              ).join("")}
+            </div>
+            <button class="btn-primary" onclick="location.reload()">
+              <span>Bắt đầu lại</span>
+              <svg viewBox="0 0 24 24" fill="none"><path d="M1 4v6h6M23 20v-6h-6" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        `;
+      }
+    </script>
+  </body>
+</html>
