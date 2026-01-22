@@ -812,12 +812,9 @@
       }
 
       .detail-features-grid.cols-4 {
-        grid-template-columns: repeat(
-          2,
-          1fr
-        ); /* Chuyển thành 2 cột -> 4 item sẽ tự rớt xuống thành 2 hàng */
-        max-width: 950px; /* Giới hạn chiều rộng để không bị quá bè */
-        margin: 0 auto; /* Căn giữa */
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 950px;
+        margin: 0 auto;
       }
 
       @media (max-width: 900px) {
@@ -1273,21 +1270,6 @@
       </div>
     </div>
 
-        <div class="continue-section" id="continue-section">
-          <button class="btn-primary" id="btn-continue">
-            <span>Tiếp tục</span>
-            <svg viewBox="0 0 24 24" fill="none">
-              <path
-                d="M5 12h14M12 5l7 7-7 7"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </button>
-        </div>
-      </div>
-    </div>
-
     <!-- PAGE 2: JOURNEY -->
     <div id="journey-page" class="page hidden">
       <header class="journey-header">
@@ -1332,7 +1314,7 @@
       };
 
       // Constants
-      const taglineTexts = {
+      const TAGLINE_TEXTS = {
         1: '"Giây phút vàng tạo nên di sản"',
         2: '"Vị thế khác biệt cho người xứng tầm"',
         3: '"Kiến tạo giá trị, vững bền tương lai"',
